@@ -223,6 +223,24 @@ app.get("/orderget", async (req, res) => {
   }
 });
 
+// delte the order
+app.delete('/orders/:id', async (req, res) => {
+  const orderId = req.params.id;
+  console.log(orderId)
+  try {
+    console.log("Try to delte")
+    const deletedOrder = await Order.findOneAndDelete({ _id: orderId });
+
+    if (!deletedOrder) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.status(200).json({ message: "User deleted" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`);
 });
